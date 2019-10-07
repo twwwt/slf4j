@@ -100,16 +100,19 @@ public class AndroidLoggerFactory implements ILoggerFactory
 					if (token.length() == 1) // token of one character appended as is
 					{
 						sb.append(token);
-						sb.append('.');
 					}
 					else if (st.hasMoreTokens()) // truncate all but the last token
 					{
 						sb.append(token.charAt(0));
-						sb.append("*.");
+						sb.append('*');
 					}
 					else // last token (usually class name) appended as is
 					{
 						sb.append(token);
+					}
+					if (st.hasMoreTokens())
+					{
+						sb.append('.');
 					}
 				} while (st.hasMoreTokens());
 
