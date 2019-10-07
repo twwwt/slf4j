@@ -60,26 +60,26 @@ public class AndroidLoggerFactory implements ILoggerFactory
 		final String tag = forceValidName(name); // fix for bug #173
 
 		AndroidLogger logger = loggerMap.get(tag);
-	   if (logger != null) return logger;
+		if (logger != null) return logger;
 
-	   logger = new AndroidLogger(tag);
-	   AndroidLogger loggerPutBefore = loggerMap.putIfAbsent(tag, logger);
-	   if (null == loggerPutBefore)
-	   {
-	   	if (!tag.equals(name) && Log.isLoggable(AndroidLoggerFactory.class.getSimpleName(), Log.WARN))
-	   	{
-	   		Log.i(AndroidLoggerFactory.class.getSimpleName(), new StringBuilder("SLF4J Logger name '")
-	   		.append(name)
-	   		.append("' exceeds maximum length of ")
-	   		.append(TAG_MAX_LENGTH)
-	   		.append(" characters; using '")
-	   		.append(tag)
-	   		.append("' as the Android Log tag instead.")
-	   		.toString());
-	   	}
-	   	return logger;
-	   }
-	   return loggerPutBefore;
+		logger = new AndroidLogger(tag);
+		AndroidLogger loggerPutBefore = loggerMap.putIfAbsent(tag, logger);
+		if (null == loggerPutBefore)
+		{
+			if (!tag.equals(name) && Log.isLoggable(AndroidLoggerFactory.class.getSimpleName(), Log.WARN))
+			{
+				Log.i(AndroidLoggerFactory.class.getSimpleName(), new StringBuilder("SLF4J Logger name '")
+				.append(name)
+				.append("' exceeds maximum length of ")
+				.append(TAG_MAX_LENGTH)
+				.append(" characters; using '")
+				.append(tag)
+				.append("' as the Android Log tag instead.")
+				.toString());
+			}
+			return logger;
+		}
+		return loggerPutBefore;
 	}
 
 	/**
