@@ -60,26 +60,26 @@ public class AndroidLoggerFactory implements ILoggerFactory
 		final String tag = forceValidName(name); // fix for bug #173
 
 		AndroidLogger logger = loggerMap.get(tag);
-	   if (logger != null) return logger;
+		if (logger != null) return logger;
 
-	   logger = new AndroidLogger(tag);
-	   AndroidLogger loggerPutBefore = loggerMap.putIfAbsent(tag, logger);
-	   if (null == loggerPutBefore)
-	   {
-	   	if (!tag.equals(name) && Log.isLoggable(AndroidLoggerFactory.class.getSimpleName(), Log.WARN))
-	   	{
-	   		Log.i(AndroidLoggerFactory.class.getSimpleName(), new StringBuilder("SLF4J Logger name '")
-	   		.append(name)
-	   		.append("' exceeds maximum length of ")
-	   		.append(TAG_MAX_LENGTH)
-	   		.append(" characters; using '")
-	   		.append(tag)
-	   		.append("' as the Android Log tag instead.")
-	   		.toString());
-	   	}
-	   	return logger;
-	   }
-	   return loggerPutBefore;
+		logger = new AndroidLogger(tag);
+		AndroidLogger loggerPutBefore = loggerMap.putIfAbsent(tag, logger);
+		if (null == loggerPutBefore)
+		{
+			if (!tag.equals(name) && Log.isLoggable(AndroidLoggerFactory.class.getSimpleName(), Log.WARN))
+			{
+				Log.i(AndroidLoggerFactory.class.getSimpleName(), new StringBuilder("SLF4J Logger name '")
+				.append(name)
+				.append("' exceeds maximum length of ")
+				.append(TAG_MAX_LENGTH)
+				.append(" characters; using '")
+				.append(tag)
+				.append("' as the Android Log tag instead.")
+				.toString());
+			}
+			return logger;
+		}
+		return loggerPutBefore;
 	}
 
 	/**
@@ -100,16 +100,19 @@ public class AndroidLoggerFactory implements ILoggerFactory
 					if (token.length() == 1) // token of one character appended as is
 					{
 						sb.append(token);
-						sb.append('.');
 					}
 					else if (st.hasMoreTokens()) // truncate all but the last token
 					{
 						sb.append(token.charAt(0));
-						sb.append("*.");
+						sb.append('*');
 					}
 					else // last token (usually class name) appended as is
 					{
 						sb.append(token);
+					}
+					if (st.hasMoreTokens())
+					{
+						sb.append('.');
 					}
 				} while (st.hasMoreTokens());
 
